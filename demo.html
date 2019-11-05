@@ -1,14 +1,131 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Audio samples from “End-to-end Text-to-speech for Low-resource Languages by Cross-Lingual Transfer Learning”</title>
+    <title>SeqRQ-AE - demo</title>
     <link rel="stylesheet" type="text/css" href="./stylesheet.css"/>
-    <!--
-    <link rel="shortcut icon" href="../../images/taco.png">
-    -->
   </head>
   <body>
-  Coming soon
+    <article>
+      <header>
+        <h1>Towards Unsupervised Speech Recognition and Synthesis with Quantized Speech Representation Learning</h1>
+      </header>
+    </article>
+
+    <div><b>Paper:</b> <a href="https://arxiv.org/abs/1910.12729">arXiv</a>
+    <div><b>Authors:</b> Alexander H. Liu <small>(co-first)</small>, Tao Tu <small>(co-first)</small>, Hung-yi Lee, Lin-shan Lee</div>
+    <div> </div>
+    <div style="width:96%"><b>Abstract:</b> In this paper we propose a Sequential Representation Quantization AutoEncoder (SeqRQ-AE) to learn from primarily unpaired audio data and produce sequences of representations very close to phoneme sequences of speech utterances. This is achieved by proper temporal segmentation to make the representations phoneme-synchronized, and proper phonetic clustering to have total number of distinct representations close to the number of phonemes. Mapping between the distinct representations and phonemes is learned from a small amount of annotated paired data. Preliminary experiments on LJSpeech demonstrated the learned representations for vowels have relative locations in latent space in good parallel to that shown in the IPA vowel chart defined by linguistics experts. With less than 20 minutes of annotated speech, our method outperformed existing methods on phoneme recognition and is able to synthesize intelligible speech that beats our baseline model.</div>
+
+    <div>
+      <h3>High-quality Audio Samples</h3>
+      This section demonstrates examples of synthesized speech produced by the proposed SeqRQ-AE. All utterances were drawn from the test set. </br>
+      Note that the following changes are made (w.r.t. the setting in the paper) for higher synthesized speech quality:
+      <ul style="list-style-type:disc;">
+        <li>An additional entry of the codebook is used for representing all punctuations</li>
+        <li>The decoder predicts 3 frames per decoding step instead of 5</li>
+        <li>WaveNet is adopted to transform mel-spectrogram into waveform</li>
+        <li>The weight of unpaired speech reconstruction (i.e. <math>&lambda;<sub>2</sub></math> in <math>Eq.7</math>) is set to 10</li>
+      </ul> 
+
+      <table style="width:96%;">
+        <tr>
+          <td></td>
+          <td><center>20 Minutes Paired Data</center></td>
+          <td><center>10 Minutes Paired Data</center></td>
+          <td><center>Ground Truth</center></td>
+        </tr>
+        <tr>
+          <td style="width:30%;" class="transcript">“in being comparatively modern.”</td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ours_20min_hq/LJ001-0002.wav"></audio></td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ours_10min_hq/LJ001-0002.wav"></audio></td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ground_truth/LJ001-0002.wav"></audio></td>
+        </tr>
+        <tr>
+          <td style="width:30%;" class="transcript">“including a few of major importance.”</td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ours_20min_hq/LJ021-0119.wav"></audio></td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ours_10min_hq/LJ021-0119.wav"></audio></td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ground_truth/LJ021-0119.wav"></audio></td>
+        </tr>
+        <tr>
+          <td style="width:30%;" class="transcript">“Here once more the almost invariable modern practice is in opposition to a natural sense of proportion.”</td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ours_20min_hq/LJ001-0148.wav"></audio></td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ours_10min_hq/LJ001-0148.wav"></audio></td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ground_truth/LJ001-0148.wav"></audio></td>
+        </tr>
+        <tr>
+          <td style="width:30%;" class="transcript">“It is, moreover, true that all living forms are but series of modifications and extensions of one single plan of structure.”</td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ours_20min_hq/LJ027-0011.wav"></audio></td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ours_10min_hq/LJ027-0011.wav"></audio></td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ground_truth/LJ027-0011.wav"></audio></td>
+        </tr>
+        <tr>
+          <td style="width:30%;" class="transcript">“The miserable wretch during the whole of this time was struggling with the most determined violence, to the great horror of the spectators.”</td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ours_20min_hq/LJ009-0255.wav"></audio></td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ours_10min_hq/LJ009-0255.wav"></audio></td>
+          <td style="width:23%;"><audio controls style="width:100%;"><source src="samples/ground_truth/LJ009-0255.wav"></audio></td>
+        </tr>
+       
+      </table>
+    </div>
+
+
+    <div>
+      <h3>Original Audio Samples</h3>
+      In this section, examples that received MOS test were demonstrated. Detailed information of the setting could be found in section 3 of our paper. </br></br>
+
+      <table style="width:96%;">
+        <tr>
+          <td></td>
+          <td><center>Ours</br><i>20min Paired Data</i></center></td>
+          <td><center>Ours (w/o codebook)</br><i>20min Paired Data</i></center></td>
+          <td><center>Speech Chain (w/o text cycle)</br><i>20min Paired Data</i></center></td>
+          <td><center>Ours </br><i>10min Paired Data</i></center></td>
+          <td><center>Supervised</br><i>23hr Paired Data</i></center></td>
+        </tr>
+        <tr>
+          <td style="width:30%;" class="transcript">“in being comparatively modern.”</td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_20min_og/LJ001-0002.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_20min_nobook_og/LJ001-0002.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/speechchain_20min_og/LJ001-0002.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_10min_og/LJ001-0002.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/supervised/LJ001-0002.wav"></audio></td>
+        </tr>
+        <tr>
+          <td style="width:30%;" class="transcript">“including a few of major importance.”</td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_20min_og/LJ021-0119.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_20min_nobook_og/LJ021-0119.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/speechchain_20min_og/LJ021-0119.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_10min_og/LJ021-0119.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/supervised/LJ021-0119.wav"></audio></td>
+        </tr>
+        <tr>
+          <td style="width:30%;" class="transcript">“Here once more the almost invariable modern practice is in opposition to a natural sense of proportion.”</td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_20min_og/LJ001-0148.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_20min_nobook_og/LJ001-0148.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/speechchain_20min_og/LJ001-0148.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_10min_og/LJ001-0148.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/supervised/LJ001-0148.wav"></audio></td>
+        </tr>
+        <tr>
+          <td style="width:30%;" class="transcript">“It is, moreover, true that all living forms are but series of modifications and extensions of one single plan of structure.”</td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_20min_og/LJ027-0011.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_20min_nobook_og/LJ027-0011.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/speechchain_20min_og/LJ027-0011.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_10min_og/LJ027-0011.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/supervised/LJ027-0011.wav"></audio></td>
+        </tr>
+        <tr>
+          <td style="width:30%;" class="transcript">“The miserable wretch during the whole of this time was struggling with the most determined violence, to the great horror of the spectators.”</td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_20min_og/LJ009-0255.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_20min_nobook_og/LJ009-0255.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/speechchain_20min_og/LJ009-0255.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/ours_10min_og/LJ009-0255.wav"></audio></td>
+          <td style="width:14%;"><audio controls style="width:100%;"><source src="samples/supervised/LJ009-0255.wav"></audio></td>
+        </tr>
+      </table>
+    </div>
+    </br>
+
+    <!-- <div align="center">Anchor Rat, all rights reserved</div> -->
   </body>
-    
 </html>
